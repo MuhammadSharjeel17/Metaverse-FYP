@@ -1,0 +1,71 @@
+.input {
+	width: 650px;
+	padding: 10px;
+	outline: none;
+	/* border: 2px solid rgb(119, 226, 119); */
+	border-radius: 5px;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    border:none;
+}
+textarea {
+	width: 650px;
+	padding: 10px;
+	outline: none;
+	/* border: 2px solid rgb(119, 226, 119); */
+	border-radius: 5px;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    border:none;
+}
+.Forms {
+	padding: 50px;
+	border-radius: 10px;
+    /* border: 3px solid blue; */
+    background-color: #d80a59;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+.buttons {
+    width:98%;
+    text-align: center;
+	margin-top: 10px;
+	border: 1px solid #0716e7;
+	background-color: #0716e7;
+	color:white;
+	font-size: 20px;
+	border-radius: 30px;
+	box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+}
+.color{
+	color:red;
+	background: #ffff;
+}
+label{
+    color:white;
+    font-size:20px;
+}
+@media (max-width: 575.98px) {
+	
+	.input{
+		width: 300px;
+	}
+	textarea {
+		width: 300px;
+	}
+	
+	.buttons {
+		
+		    color: white;
+			padding:10px;
+			/* padding-left: 10px;
+			padding-right: 10px; */
+			margin-top: 10px;
+			border: 1px solid #0716e7;
+	background-color: #0716e7;
+			color:white;
+			font-size: 15px;
+			border-radius: 20px;
+			box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+		
+		
+	}
+	
+}
