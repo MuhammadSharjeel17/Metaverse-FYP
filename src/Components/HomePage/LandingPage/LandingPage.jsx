@@ -191,8 +191,8 @@ const LandingPage = () => {
     <nav className="navbar d-flex justify-content-between">
   <div className="navbar-container">
     <ul className="menu-items">
-      <li><Link to="#home">Home</Link></li>
-      <li><Link to="#sellers">Shop</Link></li>
+      <li><Link to="#home" onClick={()=>window.scrollTo(0,0)}>Home</Link></li>
+      <li><Link to="#sellers" onClick={()=>window.scrollTo(3500,3500)}>Shop</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/trail-room">Trial-Room</Link></li>
     </ul>
@@ -262,7 +262,7 @@ const LandingPage = () => {
 </nav>
 
 
-    <div className="ml-5">
+    <div >
         <button
         style={{
             backgroundColor: '#0077FF',
