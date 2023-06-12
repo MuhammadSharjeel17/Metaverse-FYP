@@ -19,11 +19,11 @@ const Navbar = () => {
                 <h5>Home</h5>
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link px-3 btns" onClick={() => window.scrollTo(0, 0)}>
                 <h5>Features</h5>
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link className="nav-link px-3 btns" onClick={() => window.scrollTo(900, 900)}>
                 <h5>About Us</h5>

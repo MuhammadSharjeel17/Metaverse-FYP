@@ -7,6 +7,8 @@ import { Modal } from 'bootstrap/dist/js/bootstrap.bundle';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import UpdateProfile from '../../UpdateProfile/UpdateProfile';
+import ThreeModels from '../../3D-Models/3d-models';
+import ProductCard from '../../ProductCard1/ProductCard';
 const LandingPage = () => {
     let token = localStorage.getItem('user');
     const decoded = jwt_decode(token);
@@ -21,6 +23,8 @@ const LandingPage = () => {
     const [model,setModel] = useState(false);
     const [shoppingList, setShoppingList] = useState([]);
     const [cartLoading,setCartLoading] = useState(false);
+    const [ThreeProducts,setThreeProducts] = useState(false);
+    const [ThreeModel,setThreeModel] = useState(false);
 // Add to cart
 
     // Initialize quantity state
@@ -191,8 +195,8 @@ const LandingPage = () => {
     <nav className="navbar d-flex justify-content-between">
   <div className="navbar-container">
     <ul className="menu-items">
-      <li><Link to="#home" onClick={()=>window.scrollTo(0,0)}>Home</Link></li>
-      <li><Link to="#sellers" onClick={()=>window.scrollTo(3500,3500)}>Shop</Link></li>
+      <li><Link to="/" onClick={()=>window.scrollTo(0,0)}>Home</Link></li>
+      <li><Link to="/" onClick={()=>window.scrollTo(3500,3500)}>Shop</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/trail-room">Trial-Room</Link></li>
     </ul>
@@ -273,7 +277,7 @@ const LandingPage = () => {
             border: 'none',
             cursor: 'pointer',
           }}
-          onClick={()=>navigate('/productcard')}>View 3DProducts</button>
+          onClick={()=>setThreeProducts(true)}>View 3DProducts</button>
 
 <button
         style={{
@@ -285,10 +289,14 @@ const LandingPage = () => {
             border: 'none',
             cursor: 'pointer',
           }}
-          onClick={()=>navigate('/3d-card')}>View 3DModels</button>      
+          onClick={()=>setThreeModel(true)}>View 3DModels</button>      
      </div>
      {model 
      ? <UpdateProfile/>:
+     ThreeModel ? <ThreeModels/> 
+     :
+      ThreeProducts ? <ProductCard/>
+     :
      <div>
     <section id="home">
         <div className="home_page ">

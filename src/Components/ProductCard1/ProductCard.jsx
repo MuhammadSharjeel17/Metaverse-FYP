@@ -64,9 +64,9 @@ if(response.status === true){
       <div>
         <p class="justify-text">{element.description}</p>
       </div>
-      <div class="buy-now">
+      {/* <div class="buy-now">
         <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
-      </div>
+      </div> */}
     </div>
   </div>
 </div>
@@ -121,9 +121,9 @@ if(response.status === true){
           <div>
             <p class="justify-text">{element.description}</p>
           </div>
-          <div class="buy-now">
+          {/* <div class="buy-now">
             <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -186,9 +186,9 @@ if(response.status === true){
           <div>
             <p class="justify-text">{element.description}</p>
           </div>
-          <div class="buy-now">
+          {/* <div class="buy-now">
             <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -248,9 +248,9 @@ if(response.status === true){
           <div>
             <p class="justify-text">{element.description}</p>
           </div>
-          <div class="buy-now">
+          {/* <div class="buy-now">
             <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
