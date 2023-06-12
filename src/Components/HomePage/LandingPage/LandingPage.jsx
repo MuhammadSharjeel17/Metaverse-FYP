@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode';
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import UpdateProfile from '../../UpdateProfile/UpdateProfile';
 const LandingPage = () => {
     let token = localStorage.getItem('user');
     const decoded = jwt_decode(token);
@@ -17,6 +18,7 @@ const LandingPage = () => {
     const [productsDetails, setProductsDetails] = useState();
     const [loading, setLoading] = useState(false);
     const [cartCount, setCartCount] = useState(0);
+    const [model,setModel] = useState(false);
     const [shoppingList, setShoppingList] = useState([]);
     const [cartLoading,setCartLoading] = useState(false);
 // Add to cart
@@ -231,7 +233,7 @@ const LandingPage = () => {
       aria-labelledby="userDropdown"
     >
       <button
-        
+        onClick={()=>setModel(true)}
         className="dropdown-item d-flex align-items-center"
       >
         <span className="me-2">
@@ -285,6 +287,9 @@ const LandingPage = () => {
           }}
           onClick={()=>navigate('/3d-card')}>View 3DModels</button>      
      </div>
+     {model 
+     ? <UpdateProfile/>:
+     <div>
     <section id="home">
         <div className="home_page ">
             <div className="home_img ">
@@ -652,7 +657,8 @@ const LandingPage = () => {
         </div>
     </section>
     <section >
-   
+    <h2 className='text-center'>ALL PRODUCTS</h2>
+    <hr/>
     <div className="product-container ml-5">
   {productsDetails && productsDetails.map((element, index) => (
     <div className="best-p1" id={index} key={index}>
@@ -835,9 +841,10 @@ const LandingPage = () => {
             </div>
              
     </div>
-           
+    </div>
           </div>
         </div>
+        }
       </>
 
   )

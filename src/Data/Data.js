@@ -1,48 +1,4 @@
-import axios from "axios";
 
-// // let Data = [];
-
-// async function Create() {
-//   try {
-//     const Imagedata = await axios.get("http://localhost:8080/api/product/getimageproduct");
-//     console.log("data", Imagedata.data.data);
-    
-//     Imagedata.data.data.forEach((data,index) => {
-//         let imgSrc_jpg = "";
-//         let imgSrc_png = "";
-  
-//         if (data.image.endsWith(".jpg") || data.image.endsWith(".jpeg")) {
-//           imgSrc_jpg = `http://localhost:8080/ImageUploads/${data.image}`;
-//         } else if (data.image.endsWith(".png")) {
-//           imgSrc_png = `http://localhost:8080/ImageUploads/${data.image}`;
-//         }
-//       Data.push({
-//         id: `topcloth_${index+1}`,
-//         type: data.category === "women" ? "topclothes" : "",
-//         name:`Top Cloth ${index+1}`,
-//         desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
-//         imgSrc_jpg: imgSrc_jpg,
-//         imgSrc_png: imgSrc_png
-//       });
-//     });
-    
-//     console.log(Data);
-//     return Data; // Return the populated Data array
-//   } catch (error) {
-//     console.error("Error fetching image data:", error);
-//     throw error; // Rethrow the error to handle it outside of the function if needed
-//   }
-// }
-
-// (async () => {
-//   try {
-//     const populatedData = await Create();
-//     console.log(populatedData); // Log the populatedData outside of the Create function
-//     // Use populatedData as needed
-//   } catch (error) {
-//     // Handle any errors here
-//   }
-// })();
 
 // export default Data;
 
