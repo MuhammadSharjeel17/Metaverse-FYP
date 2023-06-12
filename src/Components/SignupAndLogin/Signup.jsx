@@ -60,7 +60,7 @@ const Signup = () => {
                  
                 <Form>
                    <ToastContainer/>
-    <div className='container'>
+   
     
     <div className="row">
       
@@ -76,26 +76,26 @@ const Signup = () => {
                 <div className="panel-body p-3">
                     
                         <div className="form-group py-2">
-                            <div className="input-field"> <span className="far fa-user px-3"></span>
+                            <div className="input-field"> <span className="far fa-user py-3 px-3"></span>
                              <input type="text" placeholder="Username "  name="Name" value={formik.values.Name} onChange={formik.handleChange} />
                              </div>
                              <ErrorMessage component="div" className="color" name="Name" />
                         </div>
                         <div className="form-group py-2">
-                            <div className="input-field"> <span className="far fa-user px-3"></span>
+                            <div className="input-field"> <span className="far fa-user py-3 px-3"></span>
                              <input type="email" placeholder="Email"  name="email" value={formik.values.email} onChange={formik.handleChange}  />
                             
                              </div>
                              <ErrorMessage component="div" className="color" name="email" /> 
                         </div>
                         <div className="form-group  ">
-                            <div className="input-field"> <span className="fas fa-lock  px-3"></span>
+                            <div className="input-field"> <span className="fas fa-lock  py-3 px-3"></span>
                              <input type="password" placeholder="Enter your Password"  name="password" value={formik.values.password} onChange={formik.handleChange} /> 
                              {/* <button className="btn bg-white text-muted"> <span className="far fa-eye-slash"></span> </button>  */}
                             </div> <ErrorMessage component="div" className="color" name="password" />
                         </div>
                         <div className="form-group  ">
-                            <div className="input-field"> <span className="fas fa-lock  px-3"></span>
+                            <div className="input-field"> <span className="fas fa-lock  py-3 px-3"></span>
                              <input type="password" placeholder="Confirm Password"  name="cpassword" value={formik.values.cpassword} onChange={formik.handleChange} /> 
                              {/* <button className="btn bg-white text-muted">
                                <span className="far fa-eye-slash"></span> </button>  */}
@@ -112,7 +112,7 @@ const Signup = () => {
             </div>
         </div>
     </div>
-</div>
+
 
 </Form>
     </div>          )}

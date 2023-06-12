@@ -11,14 +11,15 @@ import ProductModel from './Components/ProductCard/productcard';
 import Homepage from './Components/HomePage/Homepage';
 import PaymentGateway from './Components/PaymentGateway/PaymentGateway';
 import AddToCart from './Components/AddToCart/AddtoCart';
-import ProductForm from './Components/ProductForm/ProductForm';
+
 import AboutUs from './Components/AboutUs/AboutUs';
 import ProductCard from './Components/ProductCard1/ProductCard';
 import UpdateProfile from './Components/UpdateProfile/UpdateProfile';
 import HomeRoute from './Components/ProtectedRoutes/HomeRoutes';
 import ProtectedRoutes from './Components/ProtectedRoutes/protectedRoutes';
 import CheckoutForm from './Components/StripePayment/StripePayment';
-
+import ThreeModels from './Components/3D-Models/3d-models';
+import Home from './Screen/Home';
 
 
 
@@ -38,14 +39,16 @@ function App() {
         <Route path='/product' element={<ProductModel/>} />
        <Route element={<ProtectedRoutes/>}>
         <Route path='/home' element={<Homepage  />} />
-        <Route path='/vr' element={<VirtualRealityModel/>} />
+        <Route path='/trail-room' element={<Home/>} />
+        {/* <Route path='/vr' element={<VirtualRealityModel/>} /> */}
         <Route path='/pay' element={<CheckoutForm/>} />
         {/* <Route path='/home' element={<Banner/>} /> */}
-        <Route path='/productform' element={<ProductForm/>} />
+       
         <Route path='/payment' element={<PaymentGateway/>} />
         <Route path='/cart' element={<AddToCart/>} />
         <Route path='/about' element={<AboutUs/>} />
         <Route path='/productcard' element={<ProductCard/>} />
+        <Route path='/3d-card' element={<ThreeModels/>} />
         <Route path='/update/:id' element={<UpdateProfile/>} />
         </Route>
         </Route>

@@ -6,12 +6,12 @@ import './UpdateProfile.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
-const UpdateProfile = () => {
+const UpdateProfile = ({ handleCloseModal }) => {
   const [data, setData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState();
   const { id } = useParams();
- const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`http://localhost:8080/api/user/getuser/${id}`)
@@ -19,9 +19,9 @@ const UpdateProfile = () => {
         setData(response.data.data);
         setImagePreview(`http://localhost:8080/ImageUploads/${response.data.data.image}`);
         formik.setFieldValue('name', response.data.data.Name);
-      formik.setFieldValue('email', response.data.data.email);
+        formik.setFieldValue('email', response.data.data.email);
       });
-  }, []);
+  }, [id]);
 
   const formik = useFormik({
     initialValues: {
@@ -44,19 +44,17 @@ const UpdateProfile = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(data);
+
       if (data.status === true) {
         toast.success(data.message);
-        setTimeout(()=>{
-          navigate("/home")
-        },1000);
-        
-        
-      } else if(data.status === false) {
+        setTimeout(() => {
+          // handleCloseModal();
+          navigate('/home')
+        }, 1000);
+      } else if (data.status === false) {
         toast.error(data.message);
         setSubmitting(false);
       }
-      
     },
   });
 
@@ -85,39 +83,26 @@ const UpdateProfile = () => {
           <label>Profile Picture</label>
           <input id="image" type="file" accept="image/*" onChange={handleImageChange} />
           {imagePreview && <img className="image-size" src={imagePreview} alt="Profile Preview" />}
-          {formik.touched.image && formik.errors.image ? (
-            <div className="text-danger">{formik.errors.image}</div>
-          ) : null}
+          {formik.touched.image && formik.errors.image && <div className="text-danger">{formik.errors.image}</div>}
         </div>
         <div>
           <label htmlFor="name">Name</label>
           <input id="name" type="text" placeholder="Enter name" {...formik.getFieldProps('name')} />
-          {formik.touched.name && formik.errors.name ? (
-            <div className="text-danger">{formik.errors.name}</div>
-          ) : null}
+          {formik.touched.name && formik.errors.name && <div className="text-danger">{formik.errors.name}</div>}
         </div>
 
         <div>
           <label htmlFor="email">Email address</label>
-          <input
-            id="email"
-            type="email"
-            readOnly
-            placeholder="Enter email"
-            {...formik.getFieldProps('email')}
-          />
-          {formik.touched.email && formik.errors.email ? (
+          <input id="email" type="email" readOnly placeholder="Enter email" {...formik.getFieldProps('email')} />
+          {formik.touched.email && formik.errors.email && (
             <div className="text-danger">{formik.errors.email}</div>
-          ) : null}
+          )}
         </div>
 
-
         <button type="submit" disabled={formik.isSubmitting}>
-  {formik.isSubmitting ? 'Updating...' : 'Update Profile'}
-</button>
-    </form>
-    
-   
+          {formik.isSubmitting ? 'Updating...' : 'Update Profile'}
+        </button>
+      </form>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
-
+// import { Card, Button } from "react-bootstrap";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import './productcard.css';
 function loadGLTFModel(scene, glbPath, options) {

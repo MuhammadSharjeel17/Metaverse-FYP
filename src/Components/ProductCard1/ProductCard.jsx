@@ -31,47 +31,47 @@ if(response.status === true){
     <div className="best-seller p-5 row">
   {productData ? (
     productData.filter((x)=>x.category=="shoes").map((element, index) => (
-      <div className="col-md-4  mb-4" key={index}>
-        <div className="best-p1 shadow" id={index}>
-          <div className="sketchfab-embed-wrapper">
-            <iframe
-              title="Adidas Sport Shoes LowPoly Freebie"
-              src={element.image}
-            ></iframe>
-          </div>
-          <div className="best-p1-txt">
-            <div className="name-of-p">
-              <h3>{element.title}</h3>
-            </div>
-            <div className="rating">
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bx-star'></i>
-              <i className='bx bx-star'></i>
-            </div>
-            <div className="price d-flex justify-content-between">
-              <div className="colors">
-                <b>Available Colors:</b>
-                <i className='bx bxs-circle red'></i>
-                <i className='bx bxs-circle blue'></i>
-                <i className='bx bxs-circle white'></i>
-              </div>
-              <div className="colors mr-3">
-                <b>Quantitiy: {element.quantity}</b>
-              </div>
-            </div>
-            <div>
-              <p>
-                {element.description}
-              </p>
-            </div>
-            <div className="buy-now">
-              <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-            </div>
-          </div>
+      <div class="col-md-4 mb-4" key={index}>
+  <div class="shadow" id={index}>
+    <div class="sketchfab-embed-wrapper">
+      <iframe
+        title="Adidas Sport Shoes LowPoly Freebie"
+        src={element.image}
+      ></iframe>
+    </div>
+    <div class="best-p1-txt">
+      <div class="name-of-p">
+        <h3 class="truncate-text">{element.title}</h3>
+      </div>
+      <div class="rating">
+        <i class='bx bxs-star'></i>
+        <i class='bx bxs-star'></i>
+        <i class='bx bxs-star'></i>
+        <i class='bx bx-star'></i>
+        <i class='bx bx-star'></i>
+      </div>
+      <div class="price d-flex justify-content-between">
+        <div class="colors">
+          <b>Available Colors:</b>
+          <i class='bx bxs-circle red'></i>
+          <i class='bx bxs-circle blue'></i>
+          <i class='bx bxs-circle white'></i>
+        </div>
+        <div class="colors mr-3">
+          <b>Quantity: {element.quantity}</b>
         </div>
       </div>
+      <div>
+        <p class="justify-text">{element.description}</p>
+      </div>
+      <div class="buy-now">
+        <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
     ))
   ) : (
     <div>Loading....</div>
@@ -88,47 +88,46 @@ if(response.status === true){
     <div className="best-seller p-5 row">
   {productData ? (
     productData.filter((x)=>x.category == "men").map((element, index) => (
-      <div className="col-md-4  mb-4" key={index}>
-        <div className="best-p1 shadow" id={index}>
-          <div className="sketchfab-embed-wrapper">
-            <iframe
-              title="Adidas Sport Shoes LowPoly Freebie"
-              src={element.image}
-            ></iframe>
+      <div class="col-md-4 mb-4" key={index}>
+      <div class="shadow" id={index}>
+        <div class="sketchfab-embed-wrapper">
+          <iframe
+            title="Adidas Sport Shoes LowPoly Freebie"
+            src={element.image}
+          ></iframe>
+        </div>
+        <div class="best-p1-txt">
+          <div class="name-of-p">
+            <h3 class="truncate-text">{element.title}</h3>
           </div>
-          <div className="best-p1-txt">
-            <div className="name-of-p">
-              <h3>{element.title}</h3>
+          <div class="rating">
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bx-star'></i>
+            <i class='bx bx-star'></i>
+          </div>
+          <div class="price d-flex justify-content-between">
+            <div class="colors">
+              <b>Available Colors:</b>
+              <i class='bx bxs-circle red'></i>
+              <i class='bx bxs-circle blue'></i>
+              <i class='bx bxs-circle white'></i>
             </div>
-            <div className="rating">
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bx-star'></i>
-              <i className='bx bx-star'></i>
+            <div class="colors mr-3">
+              <b>Quantity: {element.quantity}</b>
             </div>
-            <div className="price d-flex justify-content-between">
-              <div className="colors">
-                <b>Available Colors:</b>
-                <i className='bx bxs-circle red'></i>
-                <i className='bx bxs-circle blue'></i>
-                <i className='bx bxs-circle white'></i>
-              </div>
-              <div className="colors mr-3">
-                <b>Quantitiy: {element.quantity}</b>
-              </div>
-            </div>
-            <div>
-              <p>
-                {element.description}
-              </p>
-            </div>
-            <div className="buy-now">
-              <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-            </div>
+          </div>
+          <div>
+            <p class="justify-text">{element.description}</p>
+          </div>
+          <div class="buy-now">
+            <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
           </div>
         </div>
       </div>
+    </div>
+    
     ))
   ) : (
     <div>Loading....</div>
@@ -154,47 +153,46 @@ if(response.status === true){
     <div className="best-seller p-5 row">
   {productData ? (
     productData.filter((x)=>x.category == "bags").map((element, index) => (
-      <div className="col-md-4  mb-4" key={index}>
-        <div className="best-p1 shadow" id={index}>
-          <div className="sketchfab-embed-wrapper">
-            <iframe
-              title="Adidas Sport Shoes LowPoly Freebie"
-              src={element.image}
-            ></iframe>
+      <div class="col-md-4 mb-4" key={index}>
+      <div class="shadow" id={index}>
+        <div class="sketchfab-embed-wrapper">
+          <iframe
+            title="Adidas Sport Shoes LowPoly Freebie"
+            src={element.image}
+          ></iframe>
+        </div>
+        <div class="best-p1-txt">
+          <div class="name-of-p">
+            <h3 class="truncate-text">{element.title}</h3>
           </div>
-          <div className="best-p1-txt">
-            <div className="name-of-p">
-              <h3>{element.title}</h3>
+          <div class="rating">
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bx-star'></i>
+            <i class='bx bx-star'></i>
+          </div>
+          <div class="price d-flex justify-content-between">
+            <div class="colors">
+              <b>Available Colors:</b>
+              <i class='bx bxs-circle red'></i>
+              <i class='bx bxs-circle blue'></i>
+              <i class='bx bxs-circle white'></i>
             </div>
-            <div className="rating">
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bx-star'></i>
-              <i className='bx bx-star'></i>
+            <div class="colors mr-3">
+              <b>Quantity: {element.quantity}</b>
             </div>
-            <div className="price d-flex justify-content-between">
-              <div className="colors">
-                <b>Available Colors:</b>
-                <i className='bx bxs-circle red'></i>
-                <i className='bx bxs-circle blue'></i>
-                <i className='bx bxs-circle white'></i>
-              </div>
-              <div className="colors mr-3">
-                <b>Quantitiy: {element.quantity}</b>
-              </div>
-            </div>
-            <div>
-              <p>
-                {element.description}
-              </p>
-            </div>
-            <div className="buy-now">
-              <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-            </div>
+          </div>
+          <div>
+            <p class="justify-text">{element.description}</p>
+          </div>
+          <div class="buy-now">
+            <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
           </div>
         </div>
       </div>
+    </div>
+    
     ))
   ) : (
     <div>Loading....</div>
@@ -217,47 +215,46 @@ if(response.status === true){
     <div className="best-seller p-5 row">
   {productData ? (
     productData.filter((x)=>x.category == "women").map((element, index) => (
-      <div className="col-md-4  mb-4" key={index}>
-        <div className="best-p1 shadow" id={index}>
-          <div className="sketchfab-embed-wrapper">
-            <iframe
-              title="Adidas Sport Shoes LowPoly Freebie"
-              src={element.image}
-            ></iframe>
+      <div class="col-md-4 mb-4" key={index}>
+      <div class="shadow" id={index}>
+        <div class="sketchfab-embed-wrapper">
+          <iframe
+            title="Adidas Sport Shoes LowPoly Freebie"
+            src={element.image}
+          ></iframe>
+        </div>
+        <div class="best-p1-txt">
+          <div class="name-of-p">
+            <h3 class="truncate-text">{element.title}</h3>
           </div>
-          <div className="best-p1-txt">
-            <div className="name-of-p">
-              <h3>{element.title}</h3>
+          <div class="rating">
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bx-star'></i>
+            <i class='bx bx-star'></i>
+          </div>
+          <div class="price d-flex justify-content-between">
+            <div class="colors">
+              <b>Available Colors:</b>
+              <i class='bx bxs-circle red'></i>
+              <i class='bx bxs-circle blue'></i>
+              <i class='bx bxs-circle white'></i>
             </div>
-            <div className="rating">
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bxs-star'></i>
-              <i className='bx bx-star'></i>
-              <i className='bx bx-star'></i>
+            <div class="colors mr-3">
+              <b>Quantity: {element.quantity}</b>
             </div>
-            <div className="price d-flex justify-content-between">
-              <div className="colors">
-                <b>Available Colors:</b>
-                <i className='bx bxs-circle red'></i>
-                <i className='bx bxs-circle blue'></i>
-                <i className='bx bxs-circle white'></i>
-              </div>
-              <div className="colors mr-3">
-                <b>Quantitiy: {element.quantity}</b>
-              </div>
-            </div>
-            <div>
-              <p>
-                {element.description}
-              </p>
-            </div>
-            <div className="buy-now">
-              <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-            </div>
+          </div>
+          <div>
+            <p class="justify-text">{element.description}</p>
+          </div>
+          <div class="buy-now">
+            <button class="btn btn-primary"><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy Now</a></button>
           </div>
         </div>
       </div>
+    </div>
+    
     ))
   ) : (
     <div>Loading....</div>

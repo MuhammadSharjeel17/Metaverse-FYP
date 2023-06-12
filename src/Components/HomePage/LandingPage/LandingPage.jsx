@@ -5,20 +5,44 @@ import { useState,useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 const LandingPage = () => {
     let token = localStorage.getItem('user');
     const decoded = jwt_decode(token);
+   let totalCartPrices = 0;
     console.log(token)
+    const [cartPrice,totalCartPrice] = useState(0);
     const [showDropdown, setShowDropdown] = useState(false);
     const [userDetails, setUserDetails] = useState();
-    const [productsDetails, setProductsDetails] = useState([]);
+    const [productsDetails, setProductsDetails] = useState();
     const [loading, setLoading] = useState(false);
     const [cartCount, setCartCount] = useState(0);
     const [shoppingList, setShoppingList] = useState([]);
+    const [cartLoading,setCartLoading] = useState(false);
 // Add to cart
 
     // Initialize quantity state
-const [quantity, setQuantity] = useState(1);
+    const [data, setData] = useState([]);
+    const [quantity, setQuantity] = useState([]);
+    useEffect(() => {
+        fetchData();
+      }, []);
+    
+      const fetchData = async () => {
+        try {
+           
+          await axios.get('http://localhost:8080/api/product/getimageproduct').then(response =>{
+          setData(response.data.data);
+         
+          setQuantity(Array(response.data.length).fill(1));
+          shoppingList.forEach((item) =>
+           totalCartPrice(totalCartPrices += Number(item.totalPrice)))
+        })}
+         catch (error) {
+          console.error(error);
+        }
+        
+      };
 
 // Handle quantity input change
 
@@ -26,10 +50,11 @@ const [quantity, setQuantity] = useState(1);
     useEffect(() => {
       const fetchUserDetails = async () => {
 
-        setLoading(true);
+        // setLoading(true);
+        // setCartLoading(true);
         try {
+         
           
-          console.log(decoded)
           const response = await axios.get(`http://localhost:8080/api/user/getuser/${decoded.id}`)
           setUserDetails(response.data);
         } catch (error) {
@@ -37,6 +62,18 @@ const [quantity, setQuantity] = useState(1);
         } finally {
           setLoading(false);
         }
+        let id = decoded.id;
+     axios.get(`http://localhost:8080/api/cart/get-cart/${id}`)
+      .then(response => {
+        const shoppingListData = response.data.data; // Assuming the API response is an array of shopping items
+        setShoppingList(shoppingListData);
+        setCartCount(shoppingList.length);
+          setCartLoading(false);
+       
+      })
+      .catch(error => {
+        console.log(error);
+      },[cartLoading]);
       };
       fetchUserDetails();
 
@@ -73,81 +110,83 @@ const [quantity, setQuantity] = useState(1);
     localStorage.clear();
  return navigate('/');
   };
-  const handleQuantityChange = (event) => {
+ 
+  const handleQuantityChange = (event, index) => {
     const newQuantity = parseInt(event.target.value);
-    setQuantity(newQuantity);
-};
-
-// Decrement quantity
-const decrementQuantity = () => {
-    if (quantity > 1) {
-        setQuantity(quantity - 1);
+    const newQuantities = [...quantity];
+    newQuantities[index] = newQuantity;
+    setQuantity(newQuantities);
+  };
+  
+  const decrementQuantity = (index) => {
+    if (quantity[index] > 1) {
+      const newQuantities = [...quantity];
+      newQuantities[index] = newQuantities[index] - 1;
+      setQuantity(newQuantities);
     }
-};
-
-// Increment quantity
-const incrementQuantity = (element) => {
-    const maxQuantity = parseInt(element.quantity);
-    if (quantity < maxQuantity) {
-        setQuantity(quantity + 1);
+  };
+  
+  const incrementQuantity = (index) => {
+    const maxQuantity = parseInt(data[index].quantity);
+    console.log(maxQuantity)
+    if (quantity[index] < maxQuantity) {
+      const newQuantities = [...quantity];
+      newQuantities[index] = newQuantities[index] + 1;
+      setQuantity(newQuantities);
     }
-};
+  };
 const showModal = () => {
     const modal = new Modal(document.getElementById('shoppingListModal'));
     modal.show();
+    fetchData();
   };
-const makePostRequest = () => {
-   
-   
-    console.log(decoded.id)
-    let id = decoded.id;
-    axios.get(`http://localhost:8080/api/cart/get-cart/${id}`)
-      .then(response => {
-        const shoppingListData = response.data.data; // Assuming the API response is an array of shopping items
-        setShoppingList(shoppingListData);
-        showModal();
-      })
-      .catch(error => {
-        console.log(error);
+  const addToCart = async (element, index) => {
+    try {
+      console.log(element);
+      
+      const totalPrice = parseInt(element.priceinPkr) *(quantity[index] !== 0 ? quantity[index] : quantity[index]=1);
+      let price = element.priceinPkr;
+
+      const response = await axios.post('http://localhost:8080/api/cart/add-to-cart', {
+        UserId: decoded.id,
+        productId :element._id,
+        title: element.title,
+        quantity: quantity[index],
+        image: element.image,
+        price: price,
+        totalPrice: totalPrice
       });
-  };
- console.log("shoppingList",shoppingList)
-  
-// Add to cart
 
-const addToCart =async (data) => {
-    try{
-        console.log(decoded)
-         await axios.post(`http://localhost:8080/api/cart/add-to-cart`, {
-            UserId: decoded.id,
-            title: data.title,
-            quantity: data.quantity,
-            image: data.image,
-            price: data.price
-
-        }).then((response)=>{
-            console.log(response);
-            setCartCount(cartCount + 1);
-           alert('Added to Cart');
-        })
-        
-
+      if (response.data.status === true) {
+        console.log(response);
+        toast.dark(response.data.message);
+        let id = decoded.id;
+        axios.get(`http://localhost:8080/api/cart/get-cart/${id}`).then((response) => {
+          const shoppingListData = response.data.data;
+          setShoppingList(shoppingListData);
+          setCartCount(shoppingList.length + 1);
+          setCartLoading(false);
          
+        });
+
+        setCartLoading(true);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
     }
-    catch(error){
-        console.log("Error adding to cart",error)
-    }
-   
-};
+  };
   return (
     <>
+    <ToastContainer/>
     <nav className="navbar d-flex justify-content-between">
   <div className="navbar-container">
     <ul className="menu-items">
       <li><Link to="#home">Home</Link></li>
       <li><Link to="#sellers">Shop</Link></li>
       <li><Link to="/about">About</Link></li>
-      <li><Link to="/payment">Payment</Link></li>
+      <li><Link to="/trail-room">Trial-Room</Link></li>
     </ul>
   </div>
   <div className="dropdown d-flex">
@@ -205,7 +244,7 @@ const addToCart =async (data) => {
       </button>
     </div>
     <div className="add-to-cart mr-4 rounded">
-    <button onClick={makePostRequest}>
+    <button onClick={showModal}>
     
         <i className="bx bx-cart"></i>
         {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
@@ -215,7 +254,7 @@ const addToCart =async (data) => {
 </nav>
 
 
-    <div>
+    <div className="ml-5">
         <button
         style={{
             backgroundColor: '#0077FF',
@@ -238,7 +277,7 @@ const addToCart =async (data) => {
             border: 'none',
             cursor: 'pointer',
           }}
-          onClick={()=>navigate('/productcard')}>View 3DModels</button>      
+          onClick={()=>navigate('/3d-card')}>View 3DModels</button>      
      </div>
     <section id="home">
         <div className="home_page ">
@@ -461,50 +500,7 @@ const addToCart =async (data) => {
                         </div>
                     </div>
                 </div>
-                {productsDetails.map((element,index)=>{
-                 
-              return( 
-                <div className="best-p1" id={index}>
-    <img src={"http://localhost:8080/ImageUploads/"+ element.image} alt="img" />
-    <div className="best-p1-txt">
-        <div className="name-of-p">
-            <p>{element.title}</p>
-        </div>
-        <div className="rating">
-            <i className='bx bxs-star'></i>
-            <i className='bx bxs-star'></i>
-            <i className='bx bxs-star'></i>
-            <i className='bx bxs-star'></i>
-            <i className='bx bxs-star'></i>
-        </div>
-        <div className="price">
-            <span>$ {element.priceinDollars}</span>
-            <span>PKR {element.priceinPkr}</span>
-            <div className="colors">
-                <i className='bx bxs-circle grey'></i>
-                <i className='bx bxs-circle blank'></i>
-                <i className='bx bxs-circle blank'></i>
-            </div>
-        </div>
-        <div className="quantity-container">
-            <div className="quantity-selectors">
-                <button onClick={decrementQuantity}>-</button>
-                <input type="number" min="1" max={element.quantity} value={quantity} onChange={handleQuantityChange} />
-                <button onClick={() => incrementQuantity(element)}>+</button>
-            </div>
-            <div className="add-to-cart">
-                <button onClick={()=>addToCart(element)}>
-                    <i className="bx bx-cart"></i> Add to Cart
-                </button>
-            </div>
-        </div>
-        <div className="buy-now">
-            <button><Link to="/payment">Buy Now</Link></button>
-        </div>
-    </div>
-</div>
-              )
- })}
+               
 
                 <div className="best-p1">
                     <img src="https://i.postimg.cc/FszW12Kc/na4.png" alt="img"/>
@@ -649,6 +645,58 @@ const addToCart =async (data) => {
             </div>
         </div>
     </section>
+    <section >
+   
+    <div className="product-container ml-5">
+  {productsDetails && productsDetails.map((element, index) => (
+    <div className="best-p1" id={index} key={index}>
+      <img src={"http://localhost:8080/ImageUploads/" + element.image} alt="img" />
+      <div className="best-p1-txt">
+        <div className="name-of-p">
+          <p>{element.title}</p>
+        </div>
+        <div className="rating">
+          <i className='bx bxs-star'></i>
+          <i className='bx bxs-star'></i>
+          <i className='bx bxs-star'></i>
+          <i className='bx bxs-star'></i>
+          <i className='bx bxs-star'></i>
+        </div>
+        <div className="price">
+          <span>$ {element.priceinDollars}</span>
+          <span className="price-in-pkr">PKR {element.priceinPkr}</span>
+          <div >
+            <i className='bx bxs-circle grey'></i>
+            <i className='bx bxs-circle blank'></i>
+            <i className='bx bxs-circle blank'></i>
+          </div>
+        </div>
+        <div className="quantity-container ">
+          <div className="quantity-selectors">
+          <button onClick={() => decrementQuantity(index)}>-</button>
+          <input
+  type="number"
+  
+  value={quantity[index] !== 0 ? quantity[index]  : 1}
+  max={element.quantity}
+  onChange={(event) => handleQuantityChange(event, index)}
+/>
+            <button onClick={() => incrementQuantity(index)}>+</button>
+          </div>
+          <div className="add-to-cart mt-2">
+            <button onClick={() => addToCart(element, index)}>
+              <i className="bx bx-cart"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  ))}
+</div>
+
+    </section>
+
     <section id="news">
         <div className="news-heading">
             <p>LATEST NEWS</p>
@@ -740,37 +788,52 @@ const addToCart =async (data) => {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <ul id="shoppingList">
-                {shoppingList.map(item => (
-                  <li >
-                    <div className="d-flex justify-content-between text-primary fs-6">
-                      <div>
-                        <img src={"http://localhost:8080/ImageUploads/"+item.image} alt={item.title} className="img-thumbnail" style={{ width: "100px" }} />
-                      </div>
-                      <div className="mr-3">
-                        <p className="text-primary ">Title: {item.title}</p>
-                        <p className="text-primary">Quantity: {item.quantity}</p> 
-                     <p className="text-primary">Price: {item.price}</p>
-                      </div>
-                      <i class="icon-remove"></i>
-                    </div>
-                    <hr />
-                  </li>
-                ))}
-              </ul>
+            <ul id="shoppingList" className="list-inline">
+  {shoppingList.length !==0 ? shoppingList.map(item => (
+    <li className="list-inline-item">
+      <div className="d-flex align-items-center justify-content-between text-primary ">
+        <div>
+          <img src={"http://localhost:8080/ImageUploads/"+item.image} alt={item.title} className="img-thumbnail" style={{ width: "100px" }} />
+        </div>
+        <div className="ml-3">
+          <p className="text-primary m-0">Title: {item.title}</p>
+          <p className="text-primary m-0">Quantity: {item.quantity}</p>
+          <p className="text-primary m-0">Price: {item.price}</p>
+          <p className="text-primary m-0">Total Price: {item.totalPrice}</p>
+        </div>
+        {/* <i class="fa fa-trash" aria-hidden="true"></i> */}
+      </div>
+    </li>
+  )):<div className="empty-cart">
+  <h2 className="empty-cart-message">Cart List is Empty</h2>
+</div>}
+</ul>
             </div>
-            <div className="buy-now">
-                            <button className="buy-now"><Link to="/payment">Buy  Now</Link></button>
-                        </div>
-            <div className="modal-footer">
+            <div  className="d-flex m-4 justify-content-between">
+            <div className=" buy-now">
+      <button className="btn btn-primary  material-button" >
+      <a href={`/payment?data=${encodeURIComponent(JSON.stringify(cartPrice))}`} className="text-decoration-none text-white">
+          Buy Now
+        </a>
+      </button>
+
+    </div>
+    <div className="total-price mt-3 mr-4">
+  <label className="total-price-label mt-1">Total Price:</label>
+  <span className="total-price-value">PKR {cartPrice}</span>
+</div>
+
+          </div>
+          <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
              
+    </div>
+           
           </div>
         </div>
-      </div>
+      </>
 
-    </>
   )
 }
 

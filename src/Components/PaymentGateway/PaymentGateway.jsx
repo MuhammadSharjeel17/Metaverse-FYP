@@ -1,144 +1,249 @@
-import React, { useState } from 'react';
-import Stripe from 'stripe';
+import React from 'react';
+import { CardElement, useStripe, Elements, useElements } from '@stripe/react-stripe-js';
 import './PaymentGateway.css';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { loadStripe } from '@stripe/stripe-js';
+import { toast,ToastContainer } from 'react-toastify';
+import axios from 'axios';
+const stripePromise = loadStripe('pk_test_51N7vqTBtBzUMTu5ZcGn38f8mctwCvB2gkgq3FNuntAT13djs5tLMgOMq24qr7DyphWBENRBufl4YtBTXyMiBLwVX00Bgi4l4Mn');
 
-const stripe = new Stripe(process.env.REACT_APP_STRIPE_API_KEY);
-const PaymentGateway = () => {
-  const [cardNumber, setCardNumber] = useState('');
-  const [expMonth, setExpMonth] = useState('');
-  const [expYear, setExpYear] = useState('');
-  const [cvc, setCvc] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+const PaymentForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const navigate = useNavigate();
+  const validationSchema = Yup.object().shape({
+    cardNumber: Yup.string().required('Card Number is required'),
+    expiryMonth: Yup.string().required('Expiry Month is required'),
+    expiryYear: Yup.string().required('Expiry Year is required'),
+    cvcNumber: Yup.string().required('CVC Number is required'),
+    cardholderName: Yup.string().required('Cardholder Name is required'),
+    mobileNumber: Yup.string().required('Mobile Number is required'),
+  });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const { error } = await stripe.createToken({
-      card: {
-        number: cardNumber,
-        exp_month: expMonth,
-        exp_year: expYear,
-        cvc: cvc,
-        name: name,
-        address_zip: ''
-      }
-    });
-
-    if (error) {
-      console.error(error);
-    } else {
-      console.log('');
-    }
+  const initialValues = {
+    cardNumber: '',
+    expiryMonth: '',
+    expiryYear: '',
+    cvcNumber: '',
+    cardholderName: '',
+    mobileNumber: '',
   };
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  let data = JSON.parse(queryParams.get("data"));
+  console.log(data);
+  let token = localStorage.getItem('user');
+  const decoded = jwt_decode(token)
+  const handleSubmit = async (values,) => {
+    console.log(values);
+    if(values){
+      
+    const datas =   await axios.delete("http://localhost:8080/api/cart/delete-cart/" + decoded.id);
+    console.log(datas.data)
+    if(datas.data.status === true){
+      const quantity = await axios.put("http://localhost:8080/api/updateproductquantity/" + decoded.id);
+      toast.success(`Payment Success PKR : ${data}`);
 
+      values = '';
+      data = '';
+      setTimeout(()=>navigate('/home'),3000);    
+    }
+    }
+    try {
+      // const { error, paymentMethod } = await stripe.createPaymentMethod({
+      //   type: 'card',
+      //   card: elements.getElement(CardElement),
+      //   billing_details: {
+      //     name: values.cardholderName,
+      //     phone: values.mobileNumber,
+      //   },
+      // });
+
+      // if (error) {
+      //   console.log('Error:', error.message);
+      // } else {
+      //   console.log('Payment Method:', paymentMethod);
+      //   // Handle successful payment method creation
+      //   // Send the payment method to your server for further processing
+      // }
+      const paymentIntent = await stripe.createPaymentIntent({
+        amount: 1000, // Example amount in cents
+        currency: 'usd',
+        payment_method_types: ['card'],
+      });
+      console.log('Payment Intent:', paymentIntent);
+    }
+     catch (error) {
+      console.log('Error:', error);
+    }
+  
+    
+  };
   return (
     <>
+     <ToastContainer/>
     <div className="main-back">
     <div className="container m-auto bg-white p-5 bod-3">
       <div className="row">
         {/* <!-- CARD FORM --> */}
+      
         <div className="col-lg-8 col-md-12">
-          <form>
-            <div className="header flex-between flex-vertical-center">
-              <div className="flex-vertical-center">
-                <i className="ai-bitcoin-fill size-xl pr-sm f-main-color"></i>
-                <span className="title">
-                  <strong>AceCoin</strong><span>Pay</span>
-                </span>
-              </div>
-            </div>
-            <div className="card-data flex-fill flex-vertical">
-              {/* <!-- Card Number --> */}
-              <div className="flex-between flex-vertical-center">
-                <div className="card-property-title">
-                  <strong>Card Number</strong>
-                  <span>Enter 16-digit card number on the card</span>
-                </div>
-              </div>
-
-              {/* <!-- Card Field --> */}
-              <div className="flex-between">
-                <div className="card-number flex-vertical-center flex-fill">
-                  <div className="card-number-field flex-vertical-center flex-fill">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
-                      <path fill="#ff9800" d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z" />
-                      <path fill="#d50000" d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z" />
-                      <path fill="#ff3d00" d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z" />
-                    </svg>
-                    <input type="text" placeholder="Card Number" className="form-control" id="cardNumber" onkeypress="return onlyNumberKey(event)" maxlength="19" name="cardNumber" data-bound="carddigits_mock" data-def="0000 0000 0000 0000" required />
-                  </div>
-                  <i className="ai-circle-check-fill size-lg f-main-color"></i>
-                </div>
-              </div>
-
-              {/* <!-- Expiry Date --> */}
-              <div className="flex-between">
-                <div className="card-property-title">
-                  <strong>Expiry Date</strong>
-                  <span>Enter the expiration date of the card</span>
-                </div>
-                <div className="card-property-value flex-vertical-center">
-                  <div className="input-container half-width">
-                    <input className="numbers month-own" data-def="00" type="text" data-bound="mm_mock" placeholder="MM" />
-                  </div>
-                  <span className="m-md">/</span>
-                  <div className="input-container half-width">
-                    <input className="numbers year-own" data-def="01" type="text" data-bound="yy_mock" placeholder="YYYY" />
-                  </div>
-                </div>
-              </div>
-
-              {/* <!-- CCV Number --> */}
-              <div className="flex-between">
-                <div className="card-property-title">
-                  <strong>CVC Number</strong>
-                  <span>Enter card verification code from the back of the
-                    card</span>
-                </div>
-                <div className="card-property-value">
-                  <div className="input-container">
-                    <input id="cvc" placeholder="Card CVV" maxlength="3" onkeypress="return onlyNumberKey(event)" type="password" />
-                    <i id="cvc_toggler" data-target="cvc" className="ai-eye-open pointer"></i>
-                  </div>
-                </div>
-              </div>
-
-              {/* <!-- Name --> */}
-              <div className="flex-between">
-                <div className="card-property-title">
-                  <strong>Cardholder Name</strong>
-                  <span>Enter cardholder's name</span>
-                </div>
-                <div className="card-property-value">
-                  <div className="input-container">
-                    <input id="name" data-bound="name_mock" data-def="Mr. Cardholder" type="text" className="uppercase" placeholder="CARDHOLDER NAME" />
-                    <i className="ai-person"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex-between">
-                <div className="card-property-title">
-                  <strong>Mobile No.</strong>
-                  <span>Enter Mobile No.</span>
-                </div>
-                <div className="card-property-value">
-                  <div className="input-container">
-                    <input id="phone" type="text" placeholder="Your Mobile No." />
-                    <i className="ai-phone"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="action flex-center">
-              <button type="submit" className="b-main-color pointer">
-                Pay Now
-              </button>
-            </div>
-          </form>
+        <Formik
+    initialValues={initialValues}
+    validationSchema={validationSchema}
+    onSubmit={handleSubmit}
+  >
+    <Form>
+    <div className="form-row">
+         
+         
+          {/* <ErrorMessage name="cardNumber" component="div" className="error-message" /> */}
         </div>
-
+      <div className="header flex-between flex-vertical-center">
+        <div className="flex-vertical-center">
+          <i className="ai-bitcoin-fill size-xl pr-sm f-main-color"></i>
+          <span className="title">
+            <strong>STRIPE</strong><span>Pay</span>
+          </span>
+        </div>
+      </div>
+      <div className="card-data flex-fill flex-vertical">
+        <div className="flex-between flex-vertical-center">
+          <div className="card-property-title">
+            <strong>Card Number</strong>
+            <span>Enter 16-digit card number on the card</span>
+          </div>
+        </div>
+        <div className="flex-between">
+          <div className="card-number flex-vertical-center flex-fill">
+            <div className="card-number-field flex-vertical-center flex-fill">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+                <path fill="#ff9800" d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z" />
+                <path fill="#d50000" d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z" />
+                <path fill="#ff3d00" d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z" />
+              </svg>
+              <Field
+                type="text"
+                placeholder="CardNumber"
+                className="form-control"
+                id="cardNumber"
+                name="cardNumber"
+                maxLength="19"
+                
+              />
+            </div>
+           
+            <i className="ai-circle-check-fill size-lg f-main-color"></i>
+          </div>
+          
+        </div>
+        <span className='text-danger'><ErrorMessage name="cardNumber" component="div" className="error bg-red" /></span>
+        <div className="flex-between">
+          <div className="card-property-title">
+            <strong>Expiry Date</strong>
+            <span>Enter the expiration date of the card</span>
+          </div>
+          <div className="card-property-value flex-vertical-center">
+            <div className="input-container half-width">
+              <Field
+                className="numbers month-own"
+                type="text"
+                placeholder="MM"
+                name="expiryMonth"
+                
+              />
+             
+            </div>
+            <span className='text-danger'><ErrorMessage name="expiryMonth" component="div" className="error bg-red" /></span>
+            <span className="m-md">/</span>
+            <div className="input-container half-width">
+              <Field
+                className="numbers year-own"
+                type="text"
+                placeholder="YYYY"
+                name="expiryYear"
+                
+              />
+              
+            </div>
+            <span className='text-danger'><ErrorMessage name="expiryYear" component="div" className="error bg-red" /></span>
+          </div>
+        </div>
+        <div className="flex-between">
+          <div className="card-property-title">
+            <strong>CVC Number</strong>
+            <span>Enter card verification code from the back of the card</span>
+          </div>
+          <div className="card-property-value">
+            <div className="input-container">
+              <Field
+                id="cvc"
+                placeholder="Card CVV"
+                maxLength="3"
+                type="text"
+                name="cvcNumber"
+                
+              />
+              <i id="cvc_toggler" data-target="cvc" className="ai-eye-open pointer"></i>
+             
+            </div>
+            <span className='text-danger'><ErrorMessage name="cvcNumber" component="div" className="error bg-red" /></span>
+          </div>
+        </div>
+        <div className="flex-between">
+          <div className="card-property-title">
+            <strong>Cardholder Name</strong>
+            <span>Enter cardholder's name</span>
+          </div>
+          <div className="card-property-value">
+            <div className="input-container">
+              <Field
+                id="name"
+                type="text"
+                className="uppercase"
+                placeholder="CARDHOLDER NAME"
+                name="cardholderName"
+                
+              />
+              <i className="ai-person"></i>
+             
+            </div>
+            <span className='text-danger'><ErrorMessage name="cardholderName" component="div" className="error bg-red" /></span>
+          </div>
+        </div>
+        <div className="flex-between">
+          <div className="card-property-title">
+            <strong>Mobile No.</strong>
+            <span>Enter Mobile No.</span>
+          </div>
+          <div className="card-property-value">
+            <div className="input-container">
+              <Field
+                id="phone"
+                type="text"
+                placeholder="Your Mobile No."
+                name="mobileNumber"
+                
+              />
+              <i className="ai-phone"></i>
+              
+            </div>
+            <span className='text-danger'><ErrorMessage name="mobileNumber" component="div" className="text-danger" /></span>
+          </div>
+        </div>
+      </div>
+      <div className="action flex-center">
+        <button type="submit" className="b-main-color pointer">
+          Pay Now
+        </button>
+      </div>
+    </Form>
+  </Formik>
+        </div>
+      
         {/* <!-- SIDEBAR --> */}
         <div className="col-lg-4 col-md-12 py-5">
           <div></div>
@@ -198,8 +303,8 @@ const PaymentGateway = () => {
             <div className="flex-fill flex-vertical">
               <div className="total-label f-secondary-color">You have to Pay</div>
               <div>
-                <strong>549</strong>
-                <small>.99 <span className="f-secondary-color">USD</span></small>
+                <strong>{data}</strong>
+                <small> <span className="f-secondary-color">PKR</span></small>
               </div>
             </div>
             <i className="ai-coin size-lg"></i>
@@ -208,6 +313,7 @@ const PaymentGateway = () => {
       </div>
     </div>
   </div>
+ 
     </>
   )
 }
@@ -223,6 +329,22 @@ for (let i = 0; i < bounds.length; i++) {
   );
 }
 
+
+const PaymentGateway = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const data = JSON.parse(queryParams.get("data"));
+  console.log(data);
+
+  return (
+    <Elements stripe={stripePromise}>
+      <div>
+       <CardElement id="cardNumber" />
+        <PaymentForm />
+      </div>
+    </Elements>
+  );
+};
 
 
 
