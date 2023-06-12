@@ -135,10 +135,16 @@ const LandingPage = () => {
       setQuantity(newQuantities);
     }
   };
-const showModal = () => {
-    const modal = new Modal(document.getElementById('shoppingListModal'));
-    modal.show();
-    fetchData();
+  const showModal = async () => {
+    await fetchData();
+  
+    if (shoppingList.length > 0) {
+      const modal = new Modal(document.getElementById('shoppingListModal'));
+      modal.show();
+    }
+    else{
+      toast.warning("Add Something to Cart")
+    }
   };
   const addToCart = async (element, index) => {
     try {
@@ -224,15 +230,15 @@ const showModal = () => {
       className={`dropdown-menu dropdown-menu-end ${showDropdown ? "show" : ""}`}
       aria-labelledby="userDropdown"
     >
-      <Link
-        to={`/update/${decoded.id}`}
+      <button
+        
         className="dropdown-item d-flex align-items-center"
       >
         <span className="me-2">
           <i className="fas fa-user-edit"></i>
         </span>
         Update
-      </Link>
+      </button>
       <button
         onClick={handleLogout}
         className="dropdown-item d-flex align-items-center"
@@ -352,9 +358,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle white'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                         {/* <!-- <div className="add-cart">
                             <button>Add To Cart</button>
                         </div> --> */}
@@ -382,9 +388,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle brown'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="best-p1">
@@ -409,9 +415,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle blue'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="best-p1">
@@ -436,9 +442,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle blue'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
@@ -468,9 +474,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle brown'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="best-p1">
@@ -495,9 +501,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle green'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                
@@ -524,9 +530,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle blue'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
@@ -556,9 +562,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle blue'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="best-p1">
@@ -583,9 +589,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle brown'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="best-p1">
@@ -610,9 +616,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle blue'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="best-p1">
@@ -637,9 +643,9 @@ const showModal = () => {
                                 <i className='bx bxs-circle brown'></i>
                             </div>
                         </div>
-                        <div className="buy-now">
+                        {/* <div className="buy-now">
                             <button><Link to="/payment">Buy  Now</Link></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

@@ -67,7 +67,7 @@ const Signup = () => {
         <div className="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
             {/* <h1 className='text-center mt-2 text-primary'>CONNECT  METAVERSE</h1>
             <h5 className='text-center mt-2 text-secondary'>Explore the virtual world</h5> */}
-            <div className="panel border bg-white ">
+            <div className="panel border bg-white p-5">
     
 
                 <div className="panel-heading">

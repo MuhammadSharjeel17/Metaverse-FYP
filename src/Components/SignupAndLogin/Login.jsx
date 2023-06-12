@@ -65,7 +65,7 @@ const Login = () => {
   <div className='Main-Container p-5'>
     <div className=' p-5'>
     <ToastContainer/>
-    <div className="row p-4">
+    <div className="row p-5">
         <div className="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
         {/* <h1 className='text-center mt-2 text-primary'>CONNECT  METAVERSE</h1>
             <h5 className='text-center mt-2 text-secondary'>Explore the virtual world</h5>   */}
@@ -78,7 +78,7 @@ const Login = () => {
                 <div className="panel-body  p-3">
                     
                         <div className="form-group ">
-                            <div className="input-field"> <span className="far fa-user py-3 px-4"></span> <input type="text" placeholder="Username or Email"  name="email" value={formik.values.email} onChange={formik.handleChange} /> </div>
+                            <div className="input-field"> <span className="far fa-user py-3 px-4"></span> <input type="text" placeholder="Enter Email"  name="email" value={formik.values.email} onChange={formik.handleChange} /> </div>
                             <ErrorMessage component="div" className="color" name="email" />
                         </div>
                         <div className="form-group  pb-2">

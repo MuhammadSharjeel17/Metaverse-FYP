@@ -44,9 +44,9 @@ const PaymentForm = () => {
     const datas =   await axios.delete("http://localhost:8080/api/cart/delete-cart/" + decoded.id);
     console.log(datas.data)
     if(datas.data.status === true){
-      const quantity = await axios.put("http://localhost:8080/api/updateproductquantity/" + decoded.id);
+     
       toast.success(`Payment Success PKR : ${data}`);
-
+      // const quantity = await axios.put("http://localhost:8080/api/updateproductquantity/" + decoded.id);
       values = '';
       data = '';
       setTimeout(()=>navigate('/home'),3000);    
