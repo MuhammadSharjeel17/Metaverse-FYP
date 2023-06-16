@@ -310,7 +310,7 @@ const LandingPage = () => {
                 <div className="home_label ">
                     <p>A specialist label creating luxury essentials. Ethically crafted<br/>with an unwavering commitment to exceptional quality.</p>
                 </div>
-                <button><Link to="#sellers">SHOP NOW</Link><i className='bx bx-right-arrow-alt'></i></button>
+                <button><Link   onClick={()=>window.scrollTo(3500,3500)}>SHOP NOW</Link><i className='bx bx-right-arrow-alt'></i></button>
                 <div className="home_social_icons">
                     <Link to="#"><i className='bx bxl-facebook'></i></Link>
                     <Link to="#"><i className='bx bxl-twitter'></i></Link>
@@ -341,7 +341,7 @@ const LandingPage = () => {
                 <img src="https://i.postimg.cc/MHv7KJYp/access.webp" alt="img" />
                 <div className="img-content3">
                     <p>Accessories</p>
-                    <button><Link to="#sellers">SHOP NOW</Link></button>
+                    <button><Link >SHOP NOW</Link></button>
                 </div>
             </div>
         </div>
